@@ -17,9 +17,7 @@ class ConnectionManager:
         self.count = 0
         self.active_connections.remove(websocket)
 
-    async def send_personal_message(self, data, websocket: WebSocket,
-                                    count=False):
-        if count:
-            self.count += 1
-            data['count'] = self.count
+    async def send_personal_message(self, data, websocket: WebSocket):
+        self.count += 1
+        data['count'] = self.count
         await websocket.send_json(data)
