@@ -18,11 +18,13 @@ async def get():
 @router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
+    count = 0
     try:
         while True:
+            count += 1
             text = await websocket.receive_text()
             if text and not text.isspace():
-                data = {'text': text}
+                data = {'text': text, 'count': count}
                 await manager.send_personal_message(data, websocket)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
